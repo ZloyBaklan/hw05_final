@@ -19,8 +19,8 @@ from django.conf.urls import handler404, handler500
 from django.conf.urls.static import static
 from django.urls import include, path
 
-handler404 = "posts.views.page_not_found" # noqa
-handler500 = "posts.views.server_error" # noqa
+handler404 = "posts.views.page_not_found"  # noqa
+handler500 = "posts.views.server_error"  # noqa
 '''
 Импорт правил из приложений posts, admin, users
 ( Если правила в этом приложении не найдены, обращаемся к django.contrib...)
@@ -33,5 +33,7 @@ urlpatterns = [
     path('about/', include('about.urls', namespace='about')),
 ]
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, 
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, 
+                          document_root=settings.STATIC_ROOT)
