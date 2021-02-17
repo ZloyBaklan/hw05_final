@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+  Последние обновления авторов
+{% endblock %}
+
+{% block content %}
+{% include "menu.html" %}
+  {% for post in page %}
+  {% include "post_item.html" with post=post %}
+  {% if not forloop.last %}
+  <hr>
+  {% endif %}
+  {% endfor %}
+
+  {% include "paginator.html" %}
+  
+{% endblock %} 

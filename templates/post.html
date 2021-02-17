@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+  Просмотр записи автора {{author.username}} 
+{% endblock %}
+{% block header %}
+  {{author.username}}
+{% endblock %}
+
+
+{%block content%}
+<main role="main" class="container">
+    <div class="row">
+            <div class="col-md-3 mb-3 mt-1">
+                <div class="card">
+                        <div class="card-body">
+                                <div class="h2">
+                                    <!-- Имя автора -->
+                                    {{author.get_full_name}} 
+                                </div>
+                                <div class="h3 text-muted">
+                                     <!-- username автора -->
+                                     <a href = "{% url 'posts:profile' author.username %}" ><strong class="p-2 text-gray-dark">@{{author.username}}</strong></a>
+                                </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                        <div class="h6 text-muted">
+                                        Подписок: {{ author.follower.count }} <br />
+                                        Подписан: {{ author.following.count }}
+                                        </div>
+                                </li>
+                                <li class="list-group-item">
+                                        <div class="h6 text-muted">
+                                            <!--Во view нет вызова всех постов без ограничительного фильтра-->    
+                                            Записей:{{author.posts.count}}
+                                        </div>
+                                </li>
+                        </ul>
+                </div>
+        </div>
+
+        <div class="col-md-9">
+
+            <!-- Пост -->
+            {% include "post_item.html" with post=post %}
+            {% include "comments.html" with comments=comments %}
+        </div>
+     </div>
+    </div>
+</main>
+{% endblock %}
