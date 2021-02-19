@@ -16,9 +16,9 @@ urlpatterns = [
     ),
     path
     (
-        "follow/",
+        'follow/',
         views.follow_index,
-        name="follow_index"
+        name='follow_index'
     ),
     path(
         'group/<slug:slug>/',

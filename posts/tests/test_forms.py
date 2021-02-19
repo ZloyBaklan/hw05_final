@@ -43,11 +43,6 @@ class PostFormTests(TestCase):
             text='Тестовый текст',
             group=self.group,
         )
-        '''self.comment = Comment.objects.create(
-            post=self.post,
-            author=self.user,
-            text='Текст Комментария!',
-        )'''
         self.ADD_COMMENT_URL = reverse(
             'posts:add_comment',
             args=[self.user.username, self.post.id])
@@ -59,6 +54,7 @@ class PostFormTests(TestCase):
             args=[self.user.username, self.post.id])
 
     def test_post_create(self):
+        """Корректное отображение созданного поста."""
         post = Post.objects.first()
         post.delete()
         SMALL_GIF = (
@@ -111,8 +107,8 @@ class PostFormTests(TestCase):
                     form_field = response.context.get('form').fields.get(value)
                     self.assertIsInstance(form_field, expected)
 
-    """Корректное отображение /<username>/<post_id>/edit/. """
     def test_post_edit_save(self):
+        """Корректное отображение /<username>/<post_id>/edit/. """
         SM_GIF = (
             b'\x47\x49\x46\x38\x39\x61\x02\x00'
             b'\x01\x00\x80\x00\x00\x00\x00\x00'
@@ -145,6 +141,7 @@ class PostFormTests(TestCase):
         self.assertRedirects(response, self.POST_URL)
 
     def test_comment_save(self):
+        """Корректное отображение комментария."""
         form_data = {
             'text': 'Текст Комментария!',
             'post': self.post.id,

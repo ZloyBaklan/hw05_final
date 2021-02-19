@@ -3,15 +3,19 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from yatube.settings import POSTS
-from posts.models import Group, Post, User, Comment
+from posts.models import Group, Post, User, Comment, Follow
 
 INDEX = reverse('posts:index')
+FOLLOW_INDEX = reverse('posts:follow_index')
 SLUG = 'TestG'
 GROUP = reverse('posts:group', kwargs={'slug': SLUG})
 SLUG2 = 'group-2'
 GROUP2 = reverse('posts:group', kwargs={'slug': SLUG2})
 USERNAME = 'Тестовый автор'
+USERNAME2 = 'Author'
 PROFILE = reverse('posts:profile', kwargs={'username': USERNAME})
+FOLLOW = reverse('posts:profile_follow', kwargs={'username': USERNAME})
+UNFOLLOW = reverse('posts:profile_unfollow', kwargs={'username': USERNAME})
 
 
 class YatubePostsTests(TestCase):
@@ -32,6 +36,9 @@ class YatubePostsTests(TestCase):
 
     def setUp(self):
         self.guest_client = Client()
+        self.user2 = User.objects.create(username=USERNAME2)
+        self.authorized_client2 = Client()
+        self.authorized_client2.force_login(self.user2)
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
         self.post = Post.objects.create(
@@ -64,13 +71,20 @@ class YatubePostsTests(TestCase):
             GROUP,
             INDEX,
             PROFILE,
+            FOLLOW_INDEX,
         ]
         for value in urls_names:
             with self.subTest(value=value):
-                response = self.authorized_client.get(value)
+                self.authorized_client2.get(FOLLOW)
+                response = self.authorized_client2.get(value)
                 self.assertEqual(len(response.context['page']), 1)
                 self.assertEqual(self.post,
                                  response.context.get('page')[0])
+
+    def test_unfollow_index_page_null(self):
+        """Пост не отображается в ленте у отписавшегося"""
+        response = self.authorized_client2.get(FOLLOW_INDEX)
+        self.assertEqual(len(response.context['page']), 0)
 
     def test_post_not_in_group2(self):
         """Пост не отображается в другой группе"""
@@ -89,6 +103,21 @@ class YatubePostsTests(TestCase):
         self.assertEqual(self.user, response.context.get('author'))
         self.assertEqual(len(response.context['comments']), 1)
         self.assertEqual(self.comment, response.context.get('comments')[0])
+
+    def test_follow_user(self):
+        """Проверка подписки. """
+        self.authorized_client2.get(FOLLOW)
+        follow_exist = Follow.objects.filter(user=self.user2,
+                                             author=self.user).exists()
+        self.assertTrue(follow_exist)
+
+    def test_unfollow_user(self):
+        """Проверка отписки. """
+        self.authorized_client2.get(FOLLOW)
+        self.authorized_client2.get(UNFOLLOW)
+        follow_exist = Follow.objects.filter(user=self.user2,
+                                             author=self.user).exists()
+        self.assertFalse(follow_exist)
 
 
 class PaginatorViewsTest(TestCase):
