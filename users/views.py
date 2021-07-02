@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
@@ -11,6 +11,8 @@ class SignUp(CreateView):
     form_class = CreationForm
     success_url = reverse_lazy("signup")
     template_name = "signup.html"
+    def get_success_url(self):
+        return reverse('index')
 
 
 def send_msg(email, name, subject, body):

@@ -28,7 +28,8 @@ class Post(models.Model):
                               verbose_name='Тег группы',
                               related_name='posts', blank=True, null=True,
                               help_text='Ключ для построения ссылки')
-    image = models.ImageField(upload_to='posts/', blank=True, null=True)
+    image = models.ImageField(upload_to='posts/', verbose_name='Изображение', 
+                              blank=True, null=True)
 
     class Meta:
         ordering = ['-pub_date']

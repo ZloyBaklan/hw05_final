@@ -8,9 +8,14 @@
       <div class="card-header">Вы вышли из системы</div>
       <div class="card-body">
         <p>Вы вышли из своей учётной записи. Ждём вас снова!</p>
-      </div> <!-- card body -->
+      </div><!-- card body -->
+      <div class="col-md-6 offset-md-4">   
+      <a class="btn btn-sm btn-info" href="{% url 'posts:index' %}">
+        Вернуться на главную
+      </a> 
+      </div>
+      </div>
     </div> <!-- card -->
   </div> <!-- col -->
 </div> <!-- row -->
-
 {% endblock %}

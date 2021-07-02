@@ -26,13 +26,16 @@ CACHE_S = 20
 SECRET_KEY = 'kn=9$x&god@)#b_wp!fx$_vm*wu51v$(4r7my=+*%3f9!4&@4z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
+    #"*",
+    "130.193.53.55",
     "localhost",
     "127.0.0.1",
     "[::1]",
     "testserver",
+     #просмотр сайта под любыми именами
 ]
 
 
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'posts',
     'about',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +64,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+] 
 
 ROOT_URLCONF = 'yatube.urls'
 
@@ -159,3 +169,13 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+
+REST_FRAMEWORK = {        
+        'DEFAULT_PERMISSION_CLASSES': [
+            'rest_framework.permissions.IsAuthenticated', 
+        ],
+    
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.TokenAuthentication',
+        ]
+    }
