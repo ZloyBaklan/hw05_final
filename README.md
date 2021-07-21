@@ -6,7 +6,7 @@ author - a link to the user object that are being subscribed to
 A view-function of the page has been created, where the posts of the authors, to which the current user is subscribed, are displayed.
 Two more view-functions are created for subscribing to an interesting author and in order to unsubscribe from a boring graphomaniac
 
-#Tests
+# Tests
 Tests have been written to check the operation of the new service:
 An authorized user can subscribe to other users and remove them from subscriptions.
 A new user post appears in the feed of those who are subscribed to it and does not appear in the feed of those who are not subscribed to it.
